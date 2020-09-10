@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Great Number Game</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Great Number Game</h1>
+            <p>I am thinking of a number between 1 and 100<br>Take a guess!</p>
+        </div>
+        <div class="rows">
+            <div class="col-sm-6 offset-sm-3">
+                {% if request.session.status != None %}
+                <div class="card mb-3">
+                    {% if request.session.status == "Correct" %}
+                    <div class="card-header bg-success text-light">Result</div>
+                    {% else %}
+                    <div class="card-header bg-danger text-light">Result</div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h3>{{ request.session.status }}</h3>
+                        {% if request.session.status == "Correct" %}
+                        <a href="/reset" class="btn btn-outline-success btn-block mt-3">Play Again?</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                {% if request.session.status != "Correct" %}
+                <form action="/guess" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Your Guess:</label>
+                        <input type="number" class="form-control" name="guess" />
+                    </div>
+                    <input type="submit" value="Take a guess" class="btn btn-info btn-block" />
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
